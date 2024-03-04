@@ -116,7 +116,7 @@ const Contact = () => {
                                 <li><span class="ion-email"></span> contact@example.com</li>
                                 </ul> --> */}
                       </div>
-                      <div className="socials">
+                      {/* <div className="socials">
                         <ul>
                           <li>
                             <a
@@ -137,7 +137,6 @@ const Contact = () => {
                             >
                               <span className="ico-circle">
                                 <i className="ion-social-github"></i>
-                                {/* <GitHubIcon /> */}
                               </span>
                             </a>
                           </li>
@@ -153,7 +152,7 @@ const Contact = () => {
                             </a>
                           </li>
                         </ul>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
