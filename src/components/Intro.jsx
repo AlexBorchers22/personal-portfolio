@@ -7,7 +7,6 @@ const Intro = () => {
 
     // Handle resume download
     const handleDownloadResume = () => {
-        const resumeUrl = '../assets/pdf/Resume.pdf';
         const link = document.createElement('a');
         link.href = resume;
         link.download = 'resume.pdf';
