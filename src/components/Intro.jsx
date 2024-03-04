@@ -1,10 +1,25 @@
 import React from "react";
 import {ReactTyped } from "react-typed";
 import "./stars.scss";
+import resume from "../assets/pdf/Resume.pdf";
 
 const Intro = () => {
+
+    // Handle resume download
+    const handleDownloadResume = () => {
+        const resumeUrl = '../assets/pdf/Resume.pdf';
+        const link = document.createElement('a');
+        link.href = resume;
+        link.download = 'resume.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
+
     return (
         // <div id="home" className="intro route bg-image " style={{backgroundImage: "url("+bigImage+")"}}>
+        <>
+        <div id="page-top"></div>
         <div id="home" className="intro route bg-image background">
           <div id="stars" />
           <div id="stars2" />
@@ -39,10 +54,19 @@ const Intro = () => {
                     View My Work
                   </a>
                 </p>
+                <p className="pt-1">
+                    <button
+                      className="btn btn-primary btn js-scroll px-4"
+                      onClick={handleDownloadResume}
+                    >
+                      Checkout My Resume!
+                    </button>
+                  </p>
               </div>
             </div>
           </div>
         </div>
+        </>
     );
 }
 

@@ -1,8 +1,7 @@
 // Import Components
 import React from "react";
 import Toolbar from "./components/Toolbar";
-import Home from "./components/Home";
-import About from "./components/About1";
+import About from "./components/About";
 import Work from "./components/Work";
 import Contact from "./components/Contact";
 import Intro from "./components/Intro";
@@ -16,7 +15,6 @@ const App = () => {
     <div>
       <Toolbar />
       <Intro />
-      <Home />
       <About />
       <Work />
       <Contact />

@@ -118,7 +118,7 @@ a:hover {
 }
 
 .sect-pt4 {
-  padding-top: 4rem;
+  padding-top: 10rem;
 }
 
 .sect-mt4 {
@@ -997,8 +997,4 @@ BUTTON
   .back-to-top {
     bottom: 15px;
   }
-}
-
-.content-section {
-  min-height: 80vh;
 }

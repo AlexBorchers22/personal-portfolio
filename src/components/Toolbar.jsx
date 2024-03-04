@@ -1,9 +1,9 @@
 // Toolbar.js
 import React, {useState} from 'react';
-// import logo1 from '../img/male1.png';
-// import logo2 from '../img/male.png';
-import logo1 from '../img/alex1.PNG';
-import logo2 from '../img/alex2.PNG';
+// import logo1 from '../assets/img/male1.png';
+// import logo2 from '../assets/img/male.png';
+import logo1 from '../assets/img/alex1.PNG';
+import logo2 from '../assets/img/alex2.PNG';
 
 const Toolbar = () => {
   
