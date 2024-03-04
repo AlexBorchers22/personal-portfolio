@@ -1,34 +1,41 @@
 // Home.js
 import React from 'react';
+import Slider from '@mui/material/Slider';
+import { Tooltip } from '@mui/material';
 
 const Home = () => {
   const skills = [
     {
       id: "ReactJS_skill",
       content: "ReactJS",
-      start_date: "2019-01-01" // Example start date
+      start_date: "2023-10-01" // Example start date
     },
     {
       id: "NodeJS_skill",
       content: "ExpressJS",
-      start_date: "2020-03-15" // Example start date
+      start_date: "2023-10-01" // Example start date
     },
-    { id: "HTML5_skill", content: "HTML5 / CSS", start_date: "2018-06-01" },
+    { id: "HTML5_skill", content: "HTML5 / CSS", start_date: "2017-01-01" },
     {
       id: "JavaScript_skill",
       content: "JavaScript",
-      start_date: "2017-05-01" // Example start date
+      start_date: "2017-09-01" // Example start date
     },
-    { id: "PHP_skill", content: "PHP", start_date: "2019-09-01" },
+    { id: "PHP_skill", content: "PHP", start_date: "2017-09-01" },
     {
       id: "Python_skill",
       content: "Python",
-      start_date: "2020-11-01" // Example start date
+      start_date: "2021-05-01" // Example start date
     },
     {
       id: "SQL_skill",
-      content: "MySQL / SQL Server",
-      start_date: "2016-12-01" // Example start date
+      content: "MySQL",
+      start_date: "2018-01-01" // Example start date
+    },
+    {
+      id: "SQLserver_skill",
+      content: "SQL Server",
+      start_date: "2023-10-01" // Example start date
     }
   ];
   const about_me= [
@@ -54,7 +61,15 @@ const Home = () => {
     const today = new Date();
     const diff = today - start;
     const years = diff / (1000 * 60 * 60 * 24 * 365);
-    return Math.floor(years) + (years >= 2 ? "+" : "") + " years of experience";
+    const yearFloored = Math.floor(years);
+    return yearFloored === 0 ? 1 : yearFloored;
+  };
+
+  // Get max date for slider
+  const getLongestPeriod = () => {
+    const dates = skills.map(skill => new Date(skill.start_date));
+    const minDate = new Date(Math.min.apply(null, dates));
+    return calculateExperience(minDate);
   };
 
   return (
@@ -64,33 +79,28 @@ const Home = () => {
             <div className="col-sm-12">
               <div className="box-shadow-full">
                 <div className="row">
-                  <div className="col-md-6">
-                    <div className="row">
-                      <div
-                        className="col-sm-6 col-md-5"
-                        style={{ margin: "0 auto" }}
-                      >
-                        <div
-                          className="about-img"
-                          style={{ textAlign: "center" }}
-                        >
-                          <img
-                            className="img-fluid rounded b-shadow-a"
-                            alt=""
-                          />
-                        </div>
+                  <div className="col-md-6" style={{paddingRight: "3em"}}>
+                  <div className="title-box-2">
+                        <h5 className="title-left">Experience (Years)</h5>
                       </div>
-                    </div>
                     <div className="skill-mf">
                     {skills.map(skill => {
                       return (
                         <React.Fragment key={skill.id}>
+                          <>
+                          <div>{skill.content}</div>
+                          <Tooltip title={calculateExperience(skill.start_date) + " years"} placement='right'>
                           <div>
-                          <span>{skill.content}</span>{" "}
-                          <span className="pull-right">
-                            {calculateExperience(skill.start_date)}
-                          </span>
-                          </div>
+                          <Slider
+                              disabled
+                              max={getLongestPeriod()}
+                              min={0}
+                              valueLabelDisplay="on"
+                              value={calculateExperience(skill.start_date)}
+                            />
+                            </div>
+                            </Tooltip>
+                          </>
                         </React.Fragment>
                       );
                     })}

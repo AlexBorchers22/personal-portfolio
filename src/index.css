@@ -998,3 +998,11 @@ BUTTON
     bottom: 15px;
   }
 }
+
+.MuiSlider-valueLabelOpen {
+  background-color: gainsboro !important;
+  color: #0078ff !important;
+}
+.MuiSlider-track {
+  color: #0078ff !important;
+}

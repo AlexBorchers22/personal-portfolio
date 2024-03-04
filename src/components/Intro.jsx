@@ -1,7 +1,7 @@
 import React from "react";
 import {ReactTyped } from "react-typed";
 import "./stars.scss";
-import resume from "../assets/pdf/Resume.pdf";
+import resume from "../assets/pdf/Resume (3.4.2024).pdf";
 
 const Intro = () => {
 

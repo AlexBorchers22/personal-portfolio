@@ -56,7 +56,7 @@ const Toolbar = () => {
           >
             <ul className="navbar-nav">
               <li className="nav-item">
-                <a className="nav-link js-scroll active" href="#home">
+                <a className="nav-link js-scroll" href="#home">
                   Home
                 </a>
               </li>
