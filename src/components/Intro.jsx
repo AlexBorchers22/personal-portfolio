@@ -1,9 +1,10 @@
 import React from "react";
 import {ReactTyped } from "react-typed";
 import "./stars.scss";
-import resume from "../assets/pdf/Resume (3.4.2024).pdf";
+import resume from "../assets/pdf/Resume.pdf";
+import WbSunnyIcon from '@mui/icons-material/WbSunny';
 
-const Intro = () => {
+const Intro = ({theme}) => {
 
     // Handle resume download
     const handleDownloadResume = () => {
@@ -19,10 +20,19 @@ const Intro = () => {
         // <div id="home" className="intro route bg-image " style={{backgroundImage: "url("+bigImage+")"}}>
         <>
         <div id="page-top"></div>
-        <div id="home" className="intro route bg-image background">
-          <div id="stars" />
-          <div id="stars2" />
-          <div id="stars3" />
+        <div id="home" className={theme === "dark" ? "intro route bg-image background" : "intro route bg-image sunny-background"} style={{zIndex: "3"}}>
+
+          {theme === "light" ? (
+            <>
+              <WbSunnyIcon className="sun-icon" style={{ fontSize: "500px", position: "absolute", top: "-240px", left: "-240px", color: "lightgoldenrodyellow" }} />
+            </>
+          ) : (
+            <>
+              <div id="stars" />
+              <div id="stars2" />
+              <div id="stars3" />
+            </>
+          )}
   
           <div className="intro-content display-table">
             <div className="table-cell">
