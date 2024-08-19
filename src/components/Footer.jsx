@@ -29,21 +29,21 @@ const Footer = ({theme, setTheme}) => {
       <div>
         <footer className="footer">
           <div className="footer-widget">
-            <a href='https://github.com/Alex-Borchers-22' target='_blank' rel='noopener'>
+            <a href='https://github.com/Alex-Borchers-22' target='_blank' rel='noreferrer'>
               <Tooltip title="GitHub">
                 <IconButton>
                   <GitHubIcon className='footer-link'/>
                 </IconButton>
               </Tooltip>
             </a>
-            <a href='https://www.linkedin.com/in/alex-borchers-7597b8152/' target='_blank' rel='noopener'>
+            <a href='https://www.linkedin.com/in/alex-borchers-7597b8152/' target='_blank' rel='noreferrer'>
               <Tooltip title="LinkedIn">
                 <IconButton>
                   <LinkedInIcon className='footer-link'/>
                 </IconButton>
               </Tooltip>
             </a>
-            <a href='https://twitter.com/BOOOOORCH' target='_blank'  rel='noopener'>
+            <a href='https://twitter.com/BOOOOORCH' target='_blank'  rel='noreferrer'>
               <Tooltip title="Twitter">
                 <IconButton>
                   <TwitterIcon className='footer-link'/>
