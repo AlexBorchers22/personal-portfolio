@@ -6,9 +6,9 @@ import logo1 from '../assets/img/alex1.PNG';
 import logo2 from '../assets/img/alex2.PNG';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
-import { Tooltip, IconButton, Icon } from '@mui/material';
-import { Button, SwipeableDrawer, List, ListItem, ListItemText } from '@mui/material';
-import { ListItemButton, ListItemIcon } from '@mui/material';
+import { Tooltip, IconButton } from '@mui/material';
+import { Button, SwipeableDrawer, List, ListItem } from '@mui/material';
+import { ListItemButton } from '@mui/material';
 import Box from '@mui/material/Box';
 
 const Toolbar = ({theme, setTheme}) => {

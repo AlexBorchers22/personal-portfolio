@@ -7,7 +7,6 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import ReactImage from '../assets/img/react-js.png'
 import NodeJsImage from '../assets/img/node-js.png'
-import Slider from '@mui/material/Slider';
 import Html5Image from '../assets/img/html5.png'
 import JavaScriptImage from '../assets/img/javascript.png'
 import PhpImage from '../assets/img/php.png'

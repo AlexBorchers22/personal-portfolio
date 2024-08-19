@@ -1,6 +1,5 @@
 import React from 'react';
 import fst from '../assets/img/fst.png';
-import Image from './Image';
 import ViewImages from './ViewImages';
 // import ReactCardFlip from 'react-card-flip';
 
