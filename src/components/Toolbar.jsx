@@ -10,20 +10,26 @@ import { Tooltip, IconButton } from '@mui/material';
 import { Button, SwipeableDrawer, List, ListItem } from '@mui/material';
 import { ListItemButton } from '@mui/material';
 import Box from '@mui/material/Box';
+import MenuIcon from '@mui/icons-material/Menu';
 
 const Toolbar = ({theme, setTheme}) => {
   
-  // Add event listener to modify nav-bar when scrolling
+  // Add state for menu color
+  const [menuColor, setMenuColor] = useState("white");
   const [logo, setLogo] = useState(logo1);
+
+  // Update scroll event listener to handle menu color
   window.addEventListener("scroll", () => {
     if (window.scrollY > 50) {
       document.querySelector(".navbar-expand-md").classList.add("navbar-reduce");
       document.querySelector(".navbar-expand-md").classList.remove("navbar-trans");
       setLogo(logo2);
+      setMenuColor("#6c757d"); // Match footer color when scrolled
     } else {
       document.querySelector(".navbar-expand-md").classList.add("navbar-trans");
       document.querySelector(".navbar-expand-md").classList.remove("navbar-reduce");
       setLogo(logo1);
+      setMenuColor("white"); // Reset to white when at top
     }
   });
 
@@ -63,25 +69,32 @@ const Toolbar = ({theme, setTheme}) => {
             <img
               src={logo}
               alt="logo"
-              style={{ maxWidth: "100px" }}
+              style={{ maxWidth: { xs: '70px', md: '100px' } }}
               className='img-fluid rounded-circle img-thumbnail border border-5 border-secondary'
+              sx={{
+                maxWidth: {
+                  xs: '70px', // smaller on mobile
+                  md: '100px'  // original size on desktop
+                }
+              }}
             />
           </a>
-          {/* <button
-            className="navbar-toggler collapsed"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarDefault"
-            aria-controls="navbarDefault"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span>Test</span>
-            <span></span>
-            <span></span>
-          </button> */}
-          <div>
-            <Button onClick={openDrawer} className="navbar-toggler collapsed">"Test"</Button>
+          <div sx={{ display: { xs: 'block', md: 'none' } }}>
+            <IconButton 
+              onClick={openDrawer} 
+              className="colMolapsed" 
+              style={{
+                color: menuColor, 
+                fontSize: "40px",
+                marginRight: "1rem" // Add padding right
+              }}
+              sx={{ 
+                display: { xs: 'block', md: 'none' },
+                mr: 2 // Material UI spacing unit for margin right
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
             <SwipeableDrawer
               anchor={'right'}
               open={isDrawerOpen}
@@ -92,13 +105,11 @@ const Toolbar = ({theme, setTheme}) => {
                 sx={{ width: 250 }}
                 role="presentation"
                 onClick={closeDrawer}
-                // onKeyDown={toggleDrawer(anchor, false)}
               >
                 <List>
                   {config.map((text, index) => (
                     <ListItem key={text.label} disablePadding>
                       <ListItemButton>
-                        {/* <ListItemText primary={text} /> */}
                         <a className="nav-link js-scroll" href={text.link}>
                           {text.label}
                         </a>
@@ -112,6 +123,7 @@ const Toolbar = ({theme, setTheme}) => {
           <div
             className="navbar-collapse collapse justify-content-end"
             id="navbarDefault"
+            style={{ display: { xs: 'none', md: 'flex' } }}
           >
             <ul className="navbar-nav">
               {config.map((item, index) => {
@@ -123,7 +135,7 @@ const Toolbar = ({theme, setTheme}) => {
                   </li>
                 );
               })}
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <Tooltip title="Toggle Theme" placement="bottom">
                 <IconButton
                   onClick={() => {
@@ -136,7 +148,7 @@ const Toolbar = ({theme, setTheme}) => {
                   {theme === "light" ? <DarkModeIcon /> : <LightModeIcon />}  
                 </IconButton>
                 </Tooltip>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>

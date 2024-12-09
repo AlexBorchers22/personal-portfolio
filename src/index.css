@@ -701,7 +701,7 @@ PORTFOLIO
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   background-color: #fff;
-  min-height: 20em;
+  min-height: 22em;
 }
 
 /* .work-box:hover img {
@@ -974,6 +974,14 @@ BUTTON
   .box-comments .list-comments .comment-author {
     font-size: 1.5rem;
   }
+
+  .colMolapsed {
+    display: none !important;
+  }
+
+  .navbar-collapse {
+    display: none !important;
+  }
 }
 
 @media (min-width: 992px) {
@@ -1034,4 +1042,25 @@ BUTTON
   margin-left: 0.5rem;
   margin-right: 0.5rem;
   color: white;
+}
+
+.summary-header {
+  font-size: 1.5rem;
+  background-color: #464646;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+/* Add these media queries for responsive image sizing */
+@media (max-width: 768px) {
+  .navbar-brand img {
+    max-width: 70px !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .navbar-brand img {
+    max-width: 100px !important;
+  }
 }

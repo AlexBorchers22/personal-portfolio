@@ -66,11 +66,20 @@ const Work = () => {
               descriptions={["Pierson Wireless FST (Financial Summary Tool)", "Lorem Ipsum"]}
               images={[fst, fst]}
               skills={"ReactJS / ExpressJS / SQL Server"}
+              summary={`I designed and developed an online platform using React.js (frontend) and Express.js (backend) to transform how Pierson Wireless, a company with over 100 employees, manages estimations, logistics, and workgroup workflows. The system seamlessly integrates with a SQL Server database, streamlining the entire project lifecycle from inception to completion. It replaces an Excel financial summary spreadsheet with a web-based solution and hooks into our accounting software, Viewpoint by Vista, to include numerous automations for data processing both internally and externally.
+
+The platform incorporates key APIs such as AvaTax for tax calculations, USPS for address validation, Monday Dev for project management, Google Drive for document storage, and OAuth for secure authentication. It is designed with scalability in mind, allowing for future customization by other companies. Every component—from user groups to inventory and asset management—can be tailored to fit different organizational needs.
+
+This platform is deployed in-house on a Microsoft server owned and operated by Pierson Wireless, ensuring full control over its operations.`}
+                keyAccomplishments={["Converted a complex Excel financial summary spreadsheet into a dynamic web platform using React.js, Express.js, and SQL Server, improving efficiency in managing estimates, logistics, and workflows.", "Streamlined company-wide processes with automation, integrating Viewpoint by Vista and optimizing project management workflows.", "Successfully integrated a wide range of APIs, including AvaTax, USPS, Monday Dev, Google Drive, and OAuth for tax calculations, address validation, document storage, and authentication.", "Designed the platform with the flexibility to allow other companies to adopt and customize it—from user groups to asset tracking and inventory management.", "Deployed the platform on a Microsoft server owned and operated by Pierson Wireless, ensuring secure and controlled access for over 100 employees."]}
             />
             <ViewImages
-              descriptions={["Pierson Wireless FST (Financial Summary Tool)", "Lorem Ipsum"]}
-              images={[fst, fst]}
-              skills={"ReactJS / ExpressJS / SQL Server"}
+              descriptions={["Baller Bets App"]}
+              images={[fst]}
+              skills={"ReactJS / ExpressJS / MySQL"}
+              summary={`Baller Bets is a web application that allows users to bet on the outcome of sports games. It is built with React.js (frontend) and Express.js (backend), and uses a MySQL database. The app includes features such as user authentication, live game updates, and a marketplace.`}
+              keyAccomplishments={["Developed a responsive and user-friendly web application using React.js and Express.js, providing a seamless betting experience for users.", "Implemented a secure authentication system to protect user data and ensure privacy.", "Utilized live game updates to provide users with the latest information and enable them to make informed betting decisions.", "Created a marketplace feature that allows users to buy and sell bets, providing a dynamic and interactive platform for sports enthusiasts."]}
+              link={"https://main--baller-bets.netlify.app/"}
             />
             <ViewImages
               descriptions={["Pierson Wireless FST (Financial Summary Tool)", "Lorem Ipsum"]}
