@@ -46,6 +46,7 @@ const Intro = ({theme}) => {
                         "M.S. in Computer Science",
                         "Senior Software Developer",
                         "React JS / Express JS Expert",
+                        "Cursor Enthusiast",
                       ]}
                       typeSpeed={80}
                       backDelay={1100}

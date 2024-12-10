@@ -1,158 +1,155 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
+import emailjs from '@emailjs/browser';
 import imageOverlay from '../assets/img/earth.jpg';
-// import GitHubIcon from '@mui/icons-material/GitHub';
-// import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import { TextField, Button, Alert, Snackbar } from '@mui/material';
 
 const Contact = () => {
+  const form = useRef();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [notification, setNotification] = useState({ open: false, message: '', severity: 'success' });
+  const [formErrors, setFormErrors] = useState({});
+
+  function validateForm(formData) {
+    const errors = {};
+    const email = formData.get('email');
+    const name = formData.get('name');
+    const subject = formData.get('subject');
+    const message = formData.get('message');
+
+    if (!name || name.length < 2) errors.name = 'Name must be at least 2 characters';
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = 'Please enter a valid email';
+    if (!subject || subject.length < 4) errors.subject = 'Subject must be at least 4 characters';
+    if (!message || message.length < 10) errors.message = 'Message must be at least 10 characters';
+
+    return errors;
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const formData = new FormData(form.current);
+    const errors = validateForm(formData);
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      await emailjs.sendForm(
+        process.env.REACT_APP_EMAILJS_SERVICE_ID,
+        process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+        form.current,
+        process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+      );
+
+      setNotification({
+        open: true,
+        message: 'Message sent successfully!',
+        severity: 'success'
+      });
+      form.current.reset();
+      setFormErrors({});
+    } catch (error) {
+      console.error('Error sending email:', error);
+      setNotification({
+        open: true,
+        message: 'Failed to send message. Please try again.',
+        severity: 'error'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
   return (
     <section
-        className="paralax-mf footer-paralax bg-image sect-mt4 route"
-        style={{ backgroundImage: "url(" + imageOverlay + ")", minHeight: "90vh"}}
-      >
-        {/* <div className="overlay-mf"></div> */}
-        <div className="container">
-          <div className="row">
-            <div className="col-sm-12">
-              <div className="contact-mf">
-                <div id="contact" className="box-shadow-full">
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="title-box-2">
-                        <h5 className="title-left">Send A Message</h5>
-                      </div>
-                      <div>
-                        <form
-                          action="https://formspree.io/xdoeonlo"
-                          method="POST"
-                          className="contactForm"
-                        >
-                          <div id="sendmessage">
-                            Your message has been sent. Thank you!
-                          </div>
-                          <div id="errormessage"></div>
-                          <div className="row">
-                            <div className="col-md-12 mb-3">
-                              <div className="form-group">
-                                <input
-                                  type="text"
-                                  name="name"
-                                  className="form-control"
-                                  id="name"
-                                  placeholder="Your Name"
-                                  data-rule="minlen:4"
-                                  data-msg="Please enter at least 4 chars"
-                                />
-                                <div className="validation"></div>
-                              </div>
-                            </div>
-                            <div className="col-md-12 mb-3">
-                              <div className="form-group">
-                                <input
-                                  type="email"
-                                  className="form-control"
-                                  name="email"
-                                  id="email"
-                                  placeholder="Your Email"
-                                  data-rule="email"
-                                  data-msg="Please enter a valid email"
-                                />
-                                <div className="validation"></div>
-                              </div>
-                            </div>
-                            <div className="col-md-12 mb-3">
-                              <div className="form-group">
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  name="subject"
-                                  id="subject"
-                                  placeholder="Subject"
-                                  data-rule="minlen:4"
-                                  data-msg="Please enter at least 8 chars of subject"
-                                />
-                                <div className="validation"></div>
-                              </div>
-                            </div>
-                            <div className="col-md-12 mb-3">
-                              <div className="form-group">
-                                <textarea
-                                  className="form-control"
-                                  name="message"
-                                  rows="5"
-                                  data-rule="required"
-                                  data-msg="Please write something for us"
-                                  placeholder="Message"
-                                ></textarea>
-                                <div className="validation"></div>
-                              </div>
-                            </div>
-                            <div className="col-md-12">
-                              <button
-                                type="submit"
-                                className="button button-a button-big button-rouded"
-                              >
-                                Send Message
-                              </button>
-                            </div>
-                          </div>
-                        </form>
-                      </div>
+      className="paralax-mf footer-paralax bg-image sect-mt4 route"
+      style={{ backgroundImage: `url(${imageOverlay})`, minHeight: "90vh" }}
+    >
+      <div className="container">
+        <div className="row">
+          <div className="col-sm-12">
+            <div className="contact-mf">
+              <div id="contact" className="box-shadow-full">
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="title-box-2 w-100">
+                      <h5 className="title-left w-100">Send A Message</h5>
                     </div>
-                    <div className="col-md-6">
-                      <div className="title-box-2 pt-4 pt-md-0">
-                        <h5 className="title-left">Get in Touch</h5>
+                    <form ref={form} onSubmit={handleSubmit}>
+                      <div className="row">
+                        <div className="col-md-12 mb-3">
+                          <TextField
+                            fullWidth
+                            name="name"
+                            label="Your Name"
+                            variant="outlined"
+                            error={!!formErrors.name}
+                            helperText={formErrors.name}
+                          />
+                        </div>
+                        <div className="col-md-12 mb-3">
+                          <TextField
+                            fullWidth
+                            name="email"
+                            type="email"
+                            label="Your Email"
+                            variant="outlined"
+                            error={!!formErrors.email}
+                            helperText={formErrors.email}
+                          />
+                        </div>
+                        <div className="col-md-12 mb-3">
+                          <TextField
+                            fullWidth
+                            name="subject"
+                            label="Subject"
+                            variant="outlined"
+                            error={!!formErrors.subject}
+                            helperText={formErrors.subject}
+                          />
+                        </div>
+                        <div className="col-md-12 mb-3">
+                          <TextField
+                            fullWidth
+                            name="message"
+                            label="Message"
+                            multiline
+                            rows={5}
+                            variant="outlined"
+                            error={!!formErrors.message}
+                            helperText={formErrors.message}
+                          />
+                        </div>
+                        <div className="col-md-12">
+                          <Button
+                            type="submit"
+                            variant="contained"
+                            size="large"
+                            disabled={isSubmitting}
+                            sx={{ mt: 2 }}
+                          >
+                            {isSubmitting ? 'Sending...' : 'Send Message'}
+                          </Button>
+                        </div>
                       </div>
-                      <div className="more-info">
-                        <p className="lead">
-                          Whether you want to get in touch, talk about a project
-                          collaboration, or just say hi, I'd love to hear from
-                          you.
-                          <br />
-                          Simply fill the from and send me an email.
-                        </p>
-                        {/* <!-- <ul class="list-ico">
-                                <li><span class="ion-ios-location"></span> 329 WASHINGTON ST BOSTON, MA 02108</li>
-                                <li><span class="ion-ios-telephone"></span> (617) 557-0089</li>
-                                <li><span class="ion-email"></span> contact@example.com</li>
-                                </ul> --> */}
-                      </div>
-                      {/* <div className="socials">
-                        <ul>
-                          <li>
-                            <a
-                              href=""
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <span className="ico-circle">
-                                <i className="ion-social-codepen"></i>
-                              </span>
-                            </a>
-                          </li>
-                          <li>
-                            <a
-                              href=""
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <span className="ico-circle">
-                                <i className="ion-social-github"></i>
-                              </span>
-                            </a>
-                          </li>
-                          <li>
-                            <a
-                              href=""
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <span className="ico-circle">
-                                <i className="ion-social-linkedin"></i>
-                              </span>
-                            </a>
-                          </li>
-                        </ul>
-                      </div> */}
+                    </form>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="title-box-2 pt-4 pt-md-0 w-100">
+                      <h5 className="title-left w-100">Get in Touch</h5>
+                    </div>
+                    <div className="more-info">
+                      <p className="lead">
+                        Whether you want to get in touch, talk about a project
+                        collaboration, or just say hi, I'd love to hear from
+                        you.
+                        <br />
+                        Simply fill the form and send me an email.
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -160,17 +157,17 @@ const Contact = () => {
             </div>
           </div>
         </div>
-        <footer>
-          <div className="container">
-            <div className="row">
-              <div className="col-sm-12">
-                <div className="copyright-box">
-                </div>
-              </div>
-            </div>
-          </div>
-        </footer>
-      </section>
+      </div>
+      <Snackbar
+        open={notification.open}
+        autoHideDuration={6000}
+        onClose={() => setNotification({ ...notification, open: false })}
+      >
+        <Alert severity={notification.severity} onClose={() => setNotification({ ...notification, open: false })}>
+          {notification.message}
+        </Alert>
+      </Snackbar>
+    </section>
   );
 };
 
