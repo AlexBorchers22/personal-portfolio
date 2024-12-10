@@ -1,36 +1,56 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import emailjs from '@emailjs/browser';
 import imageOverlay from '../assets/img/earth.jpg';
 import { TextField, Button, Alert, Snackbar } from '@mui/material';
 
 const Contact = () => {
-  const form = useRef();
+  const [formData, setFormData] = useState({
+    name: 'Alex Borchers',
+    email: 'amb035@morningside.edu',
+    subject: 'Testing Subject',
+    message: 'Hello, I am testing the contact form.'
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [notification, setNotification] = useState({ open: false, message: '', severity: 'success' });
   const [formErrors, setFormErrors] = useState({});
 
-  function validateForm(formData) {
+  function validateForm(data) {
     const errors = {};
-    const email = formData.get('email');
-    const name = formData.get('name');
-    const subject = formData.get('subject');
-    const message = formData.get('message');
-
-    if (!name || name.length < 2) errors.name = 'Name must be at least 2 characters';
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = 'Please enter a valid email';
-    if (!subject || subject.length < 4) errors.subject = 'Subject must be at least 4 characters';
-    if (!message || message.length < 10) errors.message = 'Message must be at least 10 characters';
-
+    if (!data.name || data.name.length < 2) errors.name = 'Name must be at least 2 characters';
+    if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) errors.email = 'Please enter a valid email';
+    if (!data.subject || data.subject.length < 4) errors.subject = 'Subject must be at least 4 characters';
+    if (!data.message || data.message.length < 10) errors.message = 'Message must be at least 10 characters';
     return errors;
+  }
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    // Clear error when user starts typing
+    if (formErrors[name]) {
+      setFormErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const formData = new FormData(form.current);
-    const errors = validateForm(formData);
+    // Debug environment variables
+    console.log('Environment Variables:', {
+      serviceId: process.env.REACT_APP_EMAILJS_SERVICE_ID,
+      templateId: process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+      publicKey: process.env.REACT_APP_EMAILJS_PUBLIC_KEY,
+      nodeEnv: process.env.NODE_ENV
+    });
 
+    const errors = validateForm(formData);
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
       setIsSubmitting(false);
@@ -38,11 +58,30 @@ const Contact = () => {
     }
 
     try {
-      await emailjs.sendForm(
+      // For debugging only - remove in production
+      if (!process.env.REACT_APP_EMAILJS_SERVICE_ID) {
+        throw new Error('EmailJS Service ID is not configured');
+      }
+      if (!process.env.REACT_APP_EMAILJS_TEMPLATE_ID) {
+        throw new Error('EmailJS Template ID is not configured');
+      }
+      if (!process.env.REACT_APP_EMAILJS_PUBLIC_KEY) {
+        throw new Error('EmailJS Public Key is not configured');
+      }
+
+      await emailjs.send(
         process.env.REACT_APP_EMAILJS_SERVICE_ID,
         process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
-        form.current,
-        process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+        {
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+        },
+        {
+          publicKey: process.env.REACT_APP_EMAILJS_PUBLIC_KEY,
+          privateKey: process.env.REACT_APP_EMAILJS_PRIVATE_KEY,
+        }
       );
 
       setNotification({
@@ -50,7 +89,8 @@ const Contact = () => {
         message: 'Message sent successfully!',
         severity: 'success'
       });
-      form.current.reset();
+      // Reset form
+      setFormData({ name: '', email: '', subject: '', message: '' });
       setFormErrors({});
     } catch (error) {
       console.error('Error sending email:', error);
@@ -79,7 +119,7 @@ const Contact = () => {
                     <div className="title-box-2 w-100">
                       <h5 className="title-left w-100">Send A Message</h5>
                     </div>
-                    <form ref={form} onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit}>
                       <div className="row">
                         <div className="col-md-12 mb-3">
                           <TextField
@@ -87,6 +127,8 @@ const Contact = () => {
                             name="name"
                             label="Your Name"
                             variant="outlined"
+                            value={formData.name}
+                            onChange={handleChange}
                             error={!!formErrors.name}
                             helperText={formErrors.name}
                           />
@@ -98,6 +140,8 @@ const Contact = () => {
                             type="email"
                             label="Your Email"
                             variant="outlined"
+                            value={formData.email}
+                            onChange={handleChange}
                             error={!!formErrors.email}
                             helperText={formErrors.email}
                           />
@@ -108,6 +152,8 @@ const Contact = () => {
                             name="subject"
                             label="Subject"
                             variant="outlined"
+                            value={formData.subject}
+                            onChange={handleChange}
                             error={!!formErrors.subject}
                             helperText={formErrors.subject}
                           />
@@ -120,6 +166,8 @@ const Contact = () => {
                             multiline
                             rows={5}
                             variant="outlined"
+                            value={formData.message}
+                            onChange={handleChange}
                             error={!!formErrors.message}
                             helperText={formErrors.message}
                           />

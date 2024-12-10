@@ -55,6 +55,14 @@ const Intro = ({theme}) => {
                     />
                   </strong>
                 </p>
+                <p className="pt-1">
+                    <button
+                      className="btn btn-primary btn js-scroll px-4"
+                      onClick={handleDownloadResume}
+                    >
+                      Checkout My Resume!
+                    </button>
+                  </p>
                 <p className="pt-3">
                   <a
                     className="btn btn-primary btn js-scroll px-4"
@@ -64,14 +72,6 @@ const Intro = ({theme}) => {
                     View My Work
                   </a>
                 </p>
-                <p className="pt-1">
-                    <button
-                      className="btn btn-primary btn js-scroll px-4"
-                      onClick={handleDownloadResume}
-                    >
-                      Checkout My Resume!
-                    </button>
-                  </p>
               </div>
             </div>
           </div>
