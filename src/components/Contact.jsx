@@ -5,10 +5,10 @@ import { TextField, Button, Alert, Snackbar } from '@mui/material';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
-    name: 'Alex Borchers',
-    email: 'amb035@morningside.edu',
-    subject: 'Testing Subject',
-    message: 'Hello, I am testing the contact form.'
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [notification, setNotification] = useState({ open: false, message: '', severity: 'success' });
@@ -16,10 +16,10 @@ const Contact = () => {
 
   function validateForm(data) {
     const errors = {};
-    if (!data.name || data.name.length < 2) errors.name = 'Name must be at least 2 characters';
+    if (!data.name || data.name.length === 0) errors.name = 'Name is required';
     if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) errors.email = 'Please enter a valid email';
-    if (!data.subject || data.subject.length < 4) errors.subject = 'Subject must be at least 4 characters';
-    if (!data.message || data.message.length < 10) errors.message = 'Message must be at least 10 characters';
+    if (!data.subject || data.subject.length === 0) errors.subject = 'Subject is required';
+    if (!data.message || data.message.length === 0) errors.message = 'Message is required';
     return errors;
   }
 
