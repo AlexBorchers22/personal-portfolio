@@ -40,17 +40,17 @@ const Work = () => {
         "Built custom reporting dashboard with exportable analytics"
       ]
     },
-    ballerBets: {
-      title: "Baller Bets App",
-      contributions: [
-        "Architected full-stack application using React and Express",
-        "Implemented secure user authentication and authorization",
-        "Created real-time sports betting marketplace",
-        "Developed automated odds calculation system",
-        "Built responsive mobile-first UI with Material-UI"
-      ],
-      previewUrl: "https://main--baller-bets.netlify.app/"
-    },
+    // ballerBets: {
+    //   title: "Baller Bets App",
+    //   contributions: [
+    //     "Architected full-stack application using React and Express",
+    //     "Implemented secure user authentication and authorization",
+    //     "Created real-time sports betting marketplace",
+    //     "Developed automated odds calculation system",
+    //     "Built responsive mobile-first UI with Material-UI"
+    //   ],
+    //   previewUrl: "https://main--baller-bets.netlify.app/"
+    // },
     research: {
       title: "Machine Learning Research",
       contributions: [
@@ -151,7 +151,7 @@ const Work = () => {
           </div>
 
           {/* Baller Bets Project */}
-          <div className="col-md-6 mb-4">
+          {/* <div className="col-md-6 mb-4">
             <Paper elevation={3} className="project-showcase">
               <Box sx={{ position: 'relative', width: '100%' }}>
                 <iframe 
@@ -178,20 +178,17 @@ const Work = () => {
                     />
                   </div>
 
-                  {/* Tech Stack */}
                   <Stack direction="row" spacing={1} sx={{ mb: 2, flexWrap: 'wrap', gap: 1 }}>
                     <Chip icon={<CodeIcon />} label="React.js" color="primary" variant="outlined" />
                     <Chip icon={<IntegrationInstructionsIcon />} label="Express.js" color="primary" variant="outlined" />
                     <Chip icon={<StorageIcon />} label="MySQL" color="primary" variant="outlined" />
                   </Stack>
 
-                  {/* Brief Overview */}
                   <p>
                     A modern sports betting platform with real-time updates, user authentication,
                     and an interactive marketplace for betting enthusiasts.
                   </p>
 
-                  {/* Action Buttons */}
                   <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
                     <Button 
                       variant="outlined" 
@@ -212,7 +209,7 @@ const Work = () => {
                 </Box>
               </Box>
             </Paper>
-          </div>
+          </div> */}
 
           {/* Research Project */}
           <div className="col-md-6 mb-4">
