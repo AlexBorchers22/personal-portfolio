@@ -150,6 +150,60 @@ const Work = () => {
             </Paper>
           </div>
 
+          {/* Self chat bot  */}
+          {/* https://alex-chat-eight.vercel.app/ */}
+          <div className="col-md-6 mb-4">
+            <Paper elevation={3} className="project-showcase">
+              <Box sx={{ position: 'relative', width: '100%' }}>
+                <iframe 
+                  src="https://alex-chat-eight.vercel.app/" 
+                  title="Alex Chat Bot" 
+                  className="showcase-image" 
+                  style={{ 
+                    width: '100%',
+                    height: '250px',
+                    border: 'none',
+                    pointerEvents: 'none',
+                    borderRadius: '4px 4px 0 0',
+                    overflow: 'hidden'
+                  }}
+                />
+                <Box sx={{ p: 3 }}>
+                  <div className="d-flex align-items-center mb-2">
+                    <h4 className="mb-0">Baller Bets App</h4>
+                    <Chip 
+                      label="Public Project" 
+                      color="success" 
+                      size="small" 
+                      sx={{ ml: 2 }}
+                    />
+                  </div>
+
+                  <Stack direction="row" spacing={1} sx={{ mb: 2, flexWrap: 'wrap', gap: 1 }}>
+                    <Chip icon={<CodeIcon />} label="NextJs" color="primary" variant="outlined" />
+                    <Chip label="Claude API" color="primary" variant="outlined" />
+                    <Chip label="Vercel" color="primary" variant="outlined" />
+                  </Stack>
+
+                  <p>
+                    A self-chat bot built with NextJs and the Claude API.
+                  </p>
+
+                  <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+                    <Button 
+                      variant="contained" 
+                      href="https://alex-chat-eight.vercel.app/" 
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Check it out!
+                    </Button>
+                  </Stack>
+                </Box>
+              </Box>
+            </Paper>
+          </div>
+
           {/* Baller Bets Project */}
           {/* <div className="col-md-6 mb-4">
             <Paper elevation={3} className="project-showcase">

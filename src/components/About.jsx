@@ -13,6 +13,7 @@ import PhpImage from '../assets/img/php.png'
 import PythonImage from '../assets/img/python.jfif'
 import MySqlImage from '../assets/img/mysql.png'
 import SqlServerImage from '../assets/img/sql-server.png'
+import NextJsImage from '../assets/img/nextjs.png'
 
 const Home = () => {
   const skills = [
@@ -28,7 +29,12 @@ const Home = () => {
       start_date: "2023-10-01",
       image_url: NodeJsImage
     },
-    { id: "HTML5_skill", content: "HTML5 / CSS", start_date: "2017-01-01", image_url: Html5Image },
+    {
+      id: "NextJS_skill",
+      content: "NextJS",
+      start_date: "2024-07-01",
+      image_url: NextJsImage
+    },
     {
       id: "JavaScript_skill",
       content: "JavaScript",
