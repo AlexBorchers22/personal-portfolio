@@ -170,7 +170,7 @@ const Work = () => {
                 />
                 <Box sx={{ p: 3 }}>
                   <div className="d-flex align-items-center mb-2">
-                    <h4 className="mb-0">Baller Bets App</h4>
+                    <h4 className="mb-0">Alex Chat Bot</h4>
                     <Chip 
                       label="Public Project" 
                       color="success" 
