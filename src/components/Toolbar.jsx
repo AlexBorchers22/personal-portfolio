@@ -20,7 +20,7 @@ const Toolbar = ({theme, setTheme}) => {
 
   // Update scroll event listener to handle menu color
   window.addEventListener("scroll", () => {
-    if (window.scrollY > 50) {
+    if (window.scrollY > 10) {
       document.querySelector(".navbar-expand-md").classList.add("navbar-reduce");
       document.querySelector(".navbar-expand-md").classList.remove("navbar-trans");
       setLogo(logo2);
@@ -58,6 +58,17 @@ const Toolbar = ({theme, setTheme}) => {
     }
   ]
 
+  // Add handler for drawer link clicks
+  const handleDrawerLinkClick = (event, link) => {
+    event.preventDefault();
+    closeDrawer();
+    
+    // Smooth scroll to the target section
+    document.querySelector(link).scrollIntoView({
+      behavior: 'smooth'
+    });
+  };
+
   return (
     <>
     <nav
@@ -86,11 +97,14 @@ const Toolbar = ({theme, setTheme}) => {
               style={{
                 color: menuColor, 
                 fontSize: "40px",
-                marginRight: "1rem" // Add padding right
+                marginRight: "1rem"
               }}
               sx={{ 
                 display: { xs: 'block', md: 'none' },
-                mr: 2 // Material UI spacing unit for margin right
+                mr: 2,
+                '&:hover': {
+                  backgroundColor: 'transparent'  // Remove hover background
+                }
               }}
             >
               <MenuIcon />
@@ -104,14 +118,13 @@ const Toolbar = ({theme, setTheme}) => {
               <Box
                 sx={{ width: 250 }}
                 role="presentation"
-                onClick={closeDrawer}
               >
                 <List>
-                  {config.map((text, index) => (
-                    <ListItem key={text.label} disablePadding>
-                      <ListItemButton>
-                        <a className="nav-link js-scroll" href={text.link}>
-                          {text.label}
+                  {config.map((item, index) => (
+                    <ListItem key={item.label} disablePadding>
+                      <ListItemButton onClick={(e) => handleDrawerLinkClick(e, item.link)}>
+                        <a className="nav-link js-scroll" href={item.link}>
+                          {item.label}
                         </a>
                       </ListItemButton>
                     </ListItem>

@@ -465,8 +465,8 @@ NAVBAR
 .navbar-b.navbar-reduce {
   transition: all 0.5s ease-in-out;
   background-color: #fff;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .navbar-b.navbar-reduce .nav-link {
@@ -1029,7 +1029,7 @@ BUTTON
 .footer {
   background-color: #6c757d;
   color: #fff;
-  padding: 1rem 0;
+  padding: 0.5rem 0;
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -1052,7 +1052,7 @@ BUTTON
 /* Add these media queries for responsive image sizing */
 @media (max-width: 768px) {
   .navbar-brand img {
-    max-width: 70px !important;
+    max-width: 60px !important;
   }
 }
 
