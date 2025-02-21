@@ -23,6 +23,7 @@ const Work = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const viteVideoRef = React.useRef(null);
   const fstImageRef = React.useRef(null);
+  const crawlVideoRef = React.useRef(null);
 
   const handleOpenDialog = (project) => {
     setSelectedProject(project);
@@ -49,9 +50,9 @@ const Work = () => {
       wrapper.style.left = '0';
       wrapper.style.zIndex = '9999';
       
-      // For videos, we need to handle the clone differently
+      // Create a clone of the video element instead of moving it
       const clone = mediaElement.tagName === 'VIDEO' 
-        ? mediaElement
+        ? mediaElement.cloneNode(true)
         : mediaElement.cloneNode(true);
         
       clone.style.width = 'auto';
@@ -86,11 +87,6 @@ const Work = () => {
       closeButton.style.justifyContent = 'center';
       
       closeButton.onclick = () => {
-        if (clone.tagName === 'VIDEO') {
-          // Move video back to original container
-          mediaElement.parentNode.insertBefore(clone, mediaElement);
-          mediaElement.remove();
-        }
         document.body.removeChild(wrapper);
       };
       
@@ -112,11 +108,14 @@ const Work = () => {
     fst: {
       title: "Pierson Wireless FST",
       contributions: [
+        "The original creator of this tool - have been leading the development since 2021",
         "Developed and maintained a complex financial estimation platform",
         "Implemented real-time collaboration features for 100+ concurrent users",
-        "Integrated with multiple third-party APIs for data synchronization",
-        "Reduced estimation time by 60% through automated calculations",
-        "Built custom reporting dashboard with exportable analytics"
+        "Supports Google OAuth for user authentication",
+        "Highly integrated with our accounting platform, Viewpoint, for real-time data synchronization",
+        "Flexible setup that allows for administrative customization",
+        "PDF rendering for quotes, purchases orders, shipping labels, etc.",
+        "API integration with USPS, Avalara Tax, Hubspot, Google Drive, Gmail, & Monday Dev"
       ]
     },
     // ballerBets: {
@@ -169,6 +168,14 @@ const Work = () => {
         "Created intuitive party planning workflow with real-time updates"
       ]
     },
+    alexChatBot: {
+      title: "Alex Chat Bot",
+      contributions: [
+        "Built a self-chat bot using a Claude API and special taylored prompt",
+        "Built responsive UI with NextJS and Tailwind CSS",
+        "Deployed on Vercel"
+      ]
+    }
   };
 
   return (
@@ -187,86 +194,6 @@ const Work = () => {
         </div>
         <div className="row">
           {/* Add this new project card before existing cards */}
-          <div className="col-md-6 mb-4">
-            <Paper elevation={3} className="project-showcase">
-              <Box sx={{ position: 'relative', width: '100%' }}>
-                <Box sx={{ position: 'relative' }}>
-                  <video
-                    autoPlay
-                    muted
-                    loop
-                    ref={viteVideoRef}
-                    style={{
-                      width: '100%',
-                      height: '250px',
-                      objectFit: 'cover',
-                      borderRadius: '4px 4px 0 0'
-                    }}
-                  >
-                    <source src={viteSupabaseDemo} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                  <Button
-                    sx={{
-                      position: 'absolute',
-                      top: 8,
-                      right: 8,
-                      minWidth: 'auto',
-                      p: 0.5,
-                      bgcolor: 'rgba(255, 255, 255, 0.8)',
-                      '&:hover': {
-                        bgcolor: 'rgba(255, 255, 255, 0.9)',
-                      }
-                    }}
-                    onClick={() => handleFullscreen(viteVideoRef.current)}
-                  >
-                    <FullscreenIcon />
-                  </Button>
-                </Box>
-                <Box sx={{ p: 3 }}>
-                  <div className="d-flex align-items-center mb-2">
-                    <h4 className="mb-0">Vite Supabase Template</h4>
-                    <Chip 
-                      label="Open Source" 
-                      color="success" 
-                      size="small" 
-                      sx={{ ml: 2 }}
-                    />
-                  </div>
-
-                  <Stack direction="row" spacing={1} sx={{ mb: 2, flexWrap: 'wrap', gap: 1 }}>
-                    <Chip icon={<CodeIcon />} label="React + Vite" color="primary" variant="outlined" />
-                    <Chip icon={<StorageIcon />} label="Supabase" color="primary" variant="outlined" />
-                    <Chip icon={<CodeIcon />} label="Chakra UI" color="primary" variant="outlined" />
-                  </Stack>
-
-                  <p>
-                    A modern full-stack template featuring React with Vite, Supabase authentication,
-                    and Chakra UI components. Includes Google OAuth and protected routing.
-                  </p>
-
-                  <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
-                    <Button 
-                      variant="outlined" 
-                      startIcon={<InfoIcon />}
-                      onClick={() => handleOpenDialog('viteSupabase')}
-                    >
-                      See More Details
-                    </Button>
-                    <Button 
-                      variant="contained" 
-                      href="https://github.com/Alex-Borchers-22/vite-supabase-chakra-template"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      View on GitHub
-                    </Button>
-                  </Stack>
-                </Box>
-              </Box>
-            </Paper>
-          </div>
-
           {/* Internal Project Showcase */}
           <div className="col-md-6 mb-4">
             <Paper elevation={3} className="project-showcase">
@@ -420,6 +347,86 @@ const Work = () => {
             </Paper>
           </div>
 
+          <div className="col-md-6 mb-4">
+            <Paper elevation={3} className="project-showcase">
+              <Box sx={{ position: 'relative', width: '100%' }}>
+                <Box sx={{ position: 'relative' }}>
+                  <video
+                    autoPlay
+                    muted
+                    loop
+                    ref={viteVideoRef}
+                    style={{
+                      width: '100%',
+                      height: '250px',
+                      objectFit: 'cover',
+                      borderRadius: '4px 4px 0 0'
+                    }}
+                  >
+                    <source src={viteSupabaseDemo} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                  <Button
+                    sx={{
+                      position: 'absolute',
+                      top: 8,
+                      right: 8,
+                      minWidth: 'auto',
+                      p: 0.5,
+                      bgcolor: 'rgba(255, 255, 255, 0.8)',
+                      '&:hover': {
+                        bgcolor: 'rgba(255, 255, 255, 0.9)',
+                      }
+                    }}
+                    onClick={() => handleFullscreen(viteVideoRef.current)}
+                  >
+                    <FullscreenIcon />
+                  </Button>
+                </Box>
+                <Box sx={{ p: 3 }}>
+                  <div className="d-flex align-items-center mb-2">
+                    <h4 className="mb-0">Vite Supabase Template</h4>
+                    <Chip 
+                      label="Open Source" 
+                      color="success" 
+                      size="small" 
+                      sx={{ ml: 2 }}
+                    />
+                  </div>
+
+                  <Stack direction="row" spacing={1} sx={{ mb: 2, flexWrap: 'wrap', gap: 1 }}>
+                    <Chip icon={<CodeIcon />} label="React + Vite" color="primary" variant="outlined" />
+                    <Chip icon={<StorageIcon />} label="Supabase" color="primary" variant="outlined" />
+                    <Chip icon={<CodeIcon />} label="Chakra UI" color="primary" variant="outlined" />
+                  </Stack>
+
+                  <p>
+                    A modern full-stack template featuring React with Vite, Supabase authentication,
+                    and Chakra UI components. Includes Google OAuth and protected routing.
+                  </p>
+
+                  <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+                    <Button 
+                      variant="outlined" 
+                      startIcon={<InfoIcon />}
+                      onClick={() => handleOpenDialog('viteSupabase')}
+                    >
+                      See More Details
+                    </Button>
+                    <Button 
+                      variant="contained" 
+                      href="https://github.com/Alex-Borchers-22/vite-supabase-chakra-template"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      View on GitHub
+                    </Button>
+                  </Stack>
+                </Box>
+              </Box>
+            </Paper>
+          </div>
+
           {/* Baller Bets Project */}
           {/* <div className="col-md-6 mb-4">
             <Paper elevation={3} className="project-showcase">
@@ -480,6 +487,88 @@ const Work = () => {
               </Box>
             </Paper>
           </div> */}
+
+          {/* Add this new project card before other cards */}
+          <div className="col-md-6 mb-4">
+            <Paper elevation={3} className="project-showcase">
+              <Box sx={{ position: 'relative', width: '100%' }}>
+                <Box sx={{ position: 'relative' }}>
+                  <video
+                    autoPlay
+                    muted
+                    loop
+                    ref={crawlVideoRef}
+                    style={{
+                      width: '100%',
+                      height: '250px',
+                      objectFit: 'cover',
+                      borderRadius: '4px 4px 0 0'
+                    }}
+                  >
+                    <source src={reactNativeDemo} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                  <Button
+                    sx={{
+                      position: 'absolute',
+                      top: 8,
+                      right: 8,
+                      minWidth: 'auto',
+                      p: 0.5,
+                      bgcolor: 'rgba(255, 255, 255, 0.8)',
+                      '&:hover': {
+                        bgcolor: 'rgba(255, 255, 255, 0.9)',
+                      }
+                    }}
+                    onClick={() => handleFullscreen(crawlVideoRef.current)}
+                  >
+                    <FullscreenIcon />
+                  </Button>
+                </Box>
+                <Box sx={{ p: 3 }}>
+                  <div className="d-flex align-items-center mb-2">
+                    <h4 className="mb-0">The Crawl</h4>
+                    <Chip 
+                      label="Open Source" 
+                      color="success" 
+                      size="small" 
+                      sx={{ ml: 2 }}
+                    />
+                  </div>
+
+                  <Stack direction="row" spacing={1} sx={{ mb: 2, flexWrap: 'wrap', gap: 1 }}>
+                    <Chip icon={<CodeIcon />} label="React Native" color="primary" variant="outlined" />
+                    <Chip icon={<CodeIcon />} label="Expo" color="primary" variant="outlined" />
+                    <Chip icon={<StorageIcon />} label="Supabase" color="primary" variant="outlined" />
+                    <Chip icon={<CodeIcon />} label="Tailwind" color="primary" variant="outlined" />
+                  </Stack>
+
+                  <p>
+                    A mobile party planning app that helps users organize social events using
+                    Google Maps API for real-time location data and route planning.
+                  </p>
+
+                  <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+                    <Button 
+                      variant="outlined" 
+                      startIcon={<InfoIcon />}
+                      onClick={() => handleOpenDialog('crawl')}
+                    >
+                      See More Details
+                    </Button>
+                    <Button 
+                      variant="contained" 
+                      href="https://github.com/Alex-Borchers-22/crawl"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      View on GitHub
+                    </Button>
+                  </Stack>
+                </Box>
+              </Box>
+            </Paper>
+          </div>
 
           {/* Research Project */}
           <div className="col-md-6 mb-4">
@@ -595,87 +684,6 @@ const Work = () => {
                       download="SAJF Report.pdf"
                     >
                       Download Report
-                    </Button>
-                  </Stack>
-                </Box>
-              </Box>
-            </Paper>
-          </div>
-
-          {/* Add this new project card before other cards */}
-          <div className="col-md-6 mb-4">
-            <Paper elevation={3} className="project-showcase">
-              <Box sx={{ position: 'relative', width: '100%' }}>
-                <Box sx={{ position: 'relative' }}>
-                  <video
-                    autoPlay
-                    muted
-                    loop
-                    style={{
-                      width: '100%',
-                      height: '250px',
-                      objectFit: 'cover',
-                      borderRadius: '4px 4px 0 0'
-                    }}
-                  >
-                    <source src={reactNativeDemo} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                  <Button
-                    sx={{
-                      position: 'absolute',
-                      top: 8,
-                      right: 8,
-                      minWidth: 'auto',
-                      p: 0.5,
-                      bgcolor: 'rgba(255, 255, 255, 0.8)',
-                      '&:hover': {
-                        bgcolor: 'rgba(255, 255, 255, 0.9)',
-                      }
-                    }}
-                    onClick={() => handleFullscreen(viteVideoRef.current)}
-                  >
-                    <FullscreenIcon />
-                  </Button>
-                </Box>
-                <Box sx={{ p: 3 }}>
-                  <div className="d-flex align-items-center mb-2">
-                    <h4 className="mb-0">The Crawl</h4>
-                    <Chip 
-                      label="Open Source" 
-                      color="success" 
-                      size="small" 
-                      sx={{ ml: 2 }}
-                    />
-                  </div>
-
-                  <Stack direction="row" spacing={1} sx={{ mb: 2, flexWrap: 'wrap', gap: 1 }}>
-                    <Chip icon={<CodeIcon />} label="React Native" color="primary" variant="outlined" />
-                    <Chip icon={<CodeIcon />} label="Expo" color="primary" variant="outlined" />
-                    <Chip icon={<StorageIcon />} label="Supabase" color="primary" variant="outlined" />
-                    <Chip icon={<CodeIcon />} label="Tailwind" color="primary" variant="outlined" />
-                  </Stack>
-
-                  <p>
-                    A mobile party planning app that helps users organize social events using
-                    Google Maps API for real-time location data and route planning.
-                  </p>
-
-                  <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
-                    <Button 
-                      variant="outlined" 
-                      startIcon={<InfoIcon />}
-                      onClick={() => handleOpenDialog('crawl')}
-                    >
-                      See More Details
-                    </Button>
-                    <Button 
-                      variant="contained" 
-                      href="https://github.com/Alex-Borchers-22/crawl"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      View on GitHub
                     </Button>
                   </Stack>
                 </Box>
