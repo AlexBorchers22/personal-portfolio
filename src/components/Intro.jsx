@@ -45,8 +45,9 @@ const Intro = ({theme}) => {
                       strings={[
                         "M.S. in Computer Science",
                         "Senior Software Developer",
-                        "React JS / Express JS Expert",
-                        "Cursor Enthusiast",
+                        "React is Awesome",
+                        "Cursor is my best friend",
+                        "Ex-Point Guard",
                       ]}
                       typeSpeed={80}
                       backDelay={1100}

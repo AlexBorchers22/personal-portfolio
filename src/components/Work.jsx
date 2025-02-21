@@ -5,25 +5,215 @@ import sajfResearch from '../assets/pdf/SAJF Report.pdf';
 import viteSupabaseDemo from '../assets/mp4/vite-supabase-example.mp4';
 import reactNativeDemo from '../assets/mp4/react-native-project.mp4';
 import { 
-  Paper, Box, Chip, Stack, Button, 
+  Button, 
   Dialog, DialogTitle, DialogContent, 
   DialogActions, List, ListItem, 
   ListItemIcon, ListItemText 
 } from '@mui/material';
-import CodeIcon from '@mui/icons-material/Code';
-import StorageIcon from '@mui/icons-material/Storage';
-import IntegrationInstructionsIcon from '@mui/icons-material/IntegrationInstructions';
-import InfoIcon from '@mui/icons-material/Info';
-import LockIcon from '@mui/icons-material/Lock';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import WorkCard from './WorkCard';
+
+// Custom hook to create refs for multiple projects
+const useProjectRefs = (projects) => {
+  const refs = React.useRef({});
+  
+  // Initialize refs for each project if they don't exist
+  React.useEffect(() => {
+    projects.forEach(project => {
+      if (!refs.current[project.id]) {
+        refs.current[project.id] = React.createRef();
+      }
+    });
+  }, [projects]);
+
+  return refs.current;
+};
 
 const Work = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
-  const viteVideoRef = React.useRef(null);
-  const fstImageRef = React.useRef(null);
-  const crawlVideoRef = React.useRef(null);
+
+  const projects = [
+    {
+      id: 'fst',
+      title: "Pierson Wireless FST",
+      status: "internal",
+      mediaType: "image",
+      mediaUrl: fst,
+      allowFullscreen: true,
+      note: "Due to confidentiality agreements, limited information can be shared about this internal project.",
+      techStack: [
+        { icon: 'code', label: 'React.js' },
+        { icon: 'code', label: 'Express.js' },
+        { icon: 'storage', label: 'SQL Server' }
+      ],
+      description: "Enterprise-level financial management and estimation platform serving 100+ employees. Integrates with multiple third-party services and handles complex workflows.",
+      showDetails: true,
+      actions: [],
+      contributions: [
+        "The original creator of this tool - have been leading the development since 2021",
+        "Developed and maintained a complex financial estimation platform",
+        "Implemented real-time collaboration features for 100+ concurrent users",
+        "Supports Google OAuth for user authentication",
+        "Highly integrated with our accounting platform, Viewpoint, for real-time data synchronization",
+        "Flexible setup that allows for administrative customization",
+        "PDF rendering for quotes, purchases orders, shipping labels, etc.",
+        "API integration with USPS, Avalara Tax, Hubspot, Google Drive, Gmail, & Monday Dev"
+      ]
+    },
+    {
+      id: 'alexChatBot',
+      title: "Alex Chat Bot",
+      status: "public",
+      mediaType: "iframe",
+      mediaUrl: "https://alex-chat-eight.vercel.app/",
+      allowFullscreen: false,
+      techStack: [
+        { icon: 'code', label: 'NextJs' },
+        { icon: 'smart_toy', label: 'Claude API' },
+        { icon: 'cloud', label: 'Vercel' }
+      ],
+      description: "A self-chat bot built with NextJs and the Claude API.",
+      showDetails: true,
+      actions: [
+        {
+          label: "Check it out!",
+          href: "https://alex-chat-eight.vercel.app/",
+          primary: true,
+          external: true
+        }
+      ],
+      contributions: [
+        "Built a self-chat bot using a Claude API and special taylored prompt",
+        "Built responsive UI with NextJS and Tailwind CSS",
+        "Deployed on Vercel"
+      ]
+    },
+    {
+      id: 'viteSupabase',
+      title: "Vite Supabase Template",
+      status: "opensource",
+      mediaType: "video",
+      mediaUrl: viteSupabaseDemo,
+      allowFullscreen: true,
+      techStack: [
+        { icon: 'code', label: 'React + Vite' },
+        { icon: 'storage', label: 'Supabase' },
+        { icon: 'code', label: 'Chakra UI' }
+      ],
+      description: "A modern full-stack template featuring React with Vite, Supabase authentication, and Chakra UI components. Includes Google OAuth and protected routing.",
+      showDetails: true,
+      actions: [
+        {
+          label: "View on GitHub",
+          href: "https://github.com/Alex-Borchers-22/vite-supabase-chakra-template",
+          primary: true,
+          external: true
+        }
+      ],
+      contributions: [
+        "Created a full-stack template with React (Vite), Supabase, and Chakra UI",
+        "Implemented secure authentication with Google OAuth integration",
+        "Built protected routing system with role-based access control",
+        "Developed reusable components and clean project structure",
+        "Published as open-source template for developer community"
+      ]
+    },
+    {
+      id: 'crawl',
+      title: "The Crawl",
+      status: "inprogress",
+      mediaType: "video",
+      mediaUrl: reactNativeDemo,
+      allowFullscreen: true,
+      techStack: [
+        { icon: 'code', label: 'React Native' },
+        { icon: 'code', label: 'Expo' },
+        { icon: 'storage', label: 'Supabase' },
+        { icon: 'code', label: 'Tailwind' }
+      ],
+      description: "A mobile party planning app that helps users organize social events using Google Maps API for real-time location data and route planning.",
+      showDetails: true,
+      actions: [
+        {
+          label: "View on GitHub",
+          href: "https://github.com/Alex-Borchers-22/crawl",
+          primary: true,
+          external: true
+        }
+      ],
+      contributions: [
+        "Developed a mobile app for planning and organizing social events",
+        "Integrated Google Maps and Places APIs for real-time location data",
+        "Built responsive UI with React Native and Tailwind CSS",
+        "Implemented secure user authentication with Supabase",
+      ]
+    },
+    {
+      id: 'mlResearch',
+      title: "Machine Learning Research",
+      status: "research",
+      mediaType: "pdf",
+      mediaUrl: mlResearch,
+      allowFullscreen: false,
+      techStack: [
+        { icon: 'code', label: 'Python' },
+        { icon: 'code', label: 'TensorFlow' },
+        { icon: 'storage', label: 'Data Analysis' }
+      ],
+      description: "Masters Thesis - Research focused on testing support vector machines using metamorphic relations.",
+      showDetails: true,
+      actions: [
+        {
+          label: "Download Paper",
+          href: mlResearch,
+          download: "Project_Borchers_Masters_Final.pdf",
+          primary: true
+        }
+      ],
+      contributions: [
+        "Investigates metamorphic testing for identifying implementation bugs in SVM image classification",
+        "Introduces mutation testing through hyperparameter and support vector mutations",
+        "Develops a no-code interactive platform for ML model training and testing",
+        "Integrates ChatGPT API to generate and evaluate hyperparameter mutations",
+        "Optimizes image processing for faster execution and improved UI of existing application for usability",
+        "Implements a differential analysis table to track model performance changes",
+        "Validates metamorphic relations like RGB channel reordering and mirroring",
+        "Suggests expansion to other ML algorithms and deeper mutation testing research",
+      ]
+    },
+    {
+      id: 'sajfResearch',
+      title: "Sustainable Aviation Fuel Research",
+      status: "research",
+      mediaType: "pdf",
+      mediaUrl: sajfResearch,
+      allowFullscreen: false,
+      techStack: [
+        { icon: 'storage', label: 'Market Analysis' },
+        { icon: 'storage', label: 'Data Analysis' }
+      ],
+      description: "Market research and data analysis focused on the sustainable aviation fuel industry, examining economic viability and environmental impact.",
+      showDetails: true,
+      actions: [
+        {
+          label: "Download Report",
+          href: sajfResearch,
+          download: "SAJF Report.pdf",
+          primary: true
+        }
+      ],
+      contributions: [
+        "Interned with Avalon Capital Group - The private equity firm for Ted Waitt (co-founder of Gateway)",
+        "Conducted comprehensive market analysis of sustainable aviation fuel industry",
+        "Analyzed market trends and economic viability of alternative jet fuels",
+        "Evaluated environmental impact and sustainability metrics"
+      ]
+    }
+  ];
+
+  // Create refs for all projects
+  const projectRefs = useProjectRefs(projects);
 
   const handleOpenDialog = (project) => {
     setSelectedProject(project);
@@ -50,24 +240,30 @@ const Work = () => {
       wrapper.style.left = '0';
       wrapper.style.zIndex = '9999';
       
-      // Create a clone of the video element instead of moving it
-      const clone = mediaElement.tagName === 'VIDEO' 
-        ? mediaElement.cloneNode(true)
-        : mediaElement.cloneNode(true);
-        
+      // Create a clone of the media element
+      const clone = mediaElement.cloneNode(true);
+      
+      // Set styles for the cloned element
       clone.style.width = 'auto';
       clone.style.height = 'auto';
       clone.style.maxWidth = '95vw';
       clone.style.maxHeight = '95vh';
       clone.style.objectFit = 'contain';
       
+      // For videos, ensure autoplay and controls are enabled
+      if (clone.tagName === 'VIDEO') {
+        clone.autoplay = true;
+        clone.controls = true; // Add video controls
+        clone.muted = false; // Unmute the video
+        
+        // Ensure the video starts playing
+        clone.addEventListener('loadedmetadata', () => {
+          clone.play().catch(e => console.log('Playback failed:', e));
+        });
+      }
+      
       wrapper.appendChild(clone);
       document.body.appendChild(wrapper);
-
-      // For videos, ensure it's playing
-      if (clone.tagName === 'VIDEO') {
-        clone.play();
-      }
       
       // Add close button
       const closeButton = document.createElement('button');
@@ -85,6 +281,7 @@ const Work = () => {
       closeButton.style.display = 'flex';
       closeButton.style.alignItems = 'center';
       closeButton.style.justifyContent = 'center';
+      closeButton.style.zIndex = '10000';
       
       closeButton.onclick = () => {
         document.body.removeChild(wrapper);
@@ -104,80 +301,6 @@ const Work = () => {
     }
   };
 
-  const projectDetails = {
-    fst: {
-      title: "Pierson Wireless FST",
-      contributions: [
-        "The original creator of this tool - have been leading the development since 2021",
-        "Developed and maintained a complex financial estimation platform",
-        "Implemented real-time collaboration features for 100+ concurrent users",
-        "Supports Google OAuth for user authentication",
-        "Highly integrated with our accounting platform, Viewpoint, for real-time data synchronization",
-        "Flexible setup that allows for administrative customization",
-        "PDF rendering for quotes, purchases orders, shipping labels, etc.",
-        "API integration with USPS, Avalara Tax, Hubspot, Google Drive, Gmail, & Monday Dev"
-      ]
-    },
-    // ballerBets: {
-    //   title: "Baller Bets App",
-    //   contributions: [
-    //     "Architected full-stack application using React and Express",
-    //     "Implemented secure user authentication and authorization",
-    //     "Created real-time sports betting marketplace",
-    //     "Developed automated odds calculation system",
-    //     "Built responsive mobile-first UI with Material-UI"
-    //   ],
-    //   previewUrl: "https://main--baller-bets.netlify.app/"
-    // },
-    research: {
-      title: "Machine Learning Research",
-      contributions: [
-        "Conducted research on advanced machine learning algorithms",
-        "Developed novel approaches to data analysis",
-        "Published findings in academic paper",
-        "Implemented proof-of-concept models",
-        "Created reproducible research methodology"
-      ]
-    },
-    sajfResearch: {
-      title: "Sustainable Aviation Fuel Research",
-      contributions: [
-        "Conducted comprehensive market analysis of sustainable aviation fuel industry",
-        "Analyzed market trends and economic viability of alternative jet fuels",
-        "Developed data-driven insights for company stakeholders",
-        "Evaluated environmental impact and sustainability metrics"
-      ]
-    },
-    viteSupabase: {
-      title: "Vite Supabase Chakra Template",
-      contributions: [
-        "Created a full-stack template with React (Vite), Supabase, and Chakra UI",
-        "Implemented secure authentication with Google OAuth integration",
-        "Built protected routing system with role-based access control",
-        "Developed reusable components and clean project structure",
-        "Published as open-source template for developer community"
-      ]
-    },
-    crawl: {
-      title: "The Crawl - Party Planning App",
-      contributions: [
-        "Developed a mobile app for planning and organizing social events",
-        "Integrated Google Maps and Places APIs for real-time location data",
-        "Built responsive UI with React Native and Tailwind CSS",
-        "Implemented secure user authentication with Supabase",
-        "Created intuitive party planning workflow with real-time updates"
-      ]
-    },
-    alexChatBot: {
-      title: "Alex Chat Bot",
-      contributions: [
-        "Built a self-chat bot using a Claude API and special taylored prompt",
-        "Built responsive UI with NextJS and Tailwind CSS",
-        "Deployed on Vercel"
-      ]
-    }
-  };
-
   return (
     <section id="work" className="portfolio-mf sect-pt4 route">
       <div className="container">
@@ -193,503 +316,16 @@ const Work = () => {
           </div>
         </div>
         <div className="row">
-          {/* Add this new project card before existing cards */}
-          {/* Internal Project Showcase */}
-          <div className="col-md-6 mb-4">
-            <Paper elevation={3} className="project-showcase">
-              <Box sx={{ position: 'relative', width: '100%' }}>
-                <Box sx={{ position: 'relative' }}>
-                  <img 
-                    src={fst} 
-                    alt="FST Dashboard" 
-                    className="showcase-image"
-                    ref={fstImageRef}
-                    style={{
-                      width: '100%',
-                      height: '250px',
-                      objectFit: 'cover',
-                      borderRadius: '4px 4px 0 0'
-                    }}
-                  />
-                  <Button
-                    sx={{
-                      position: 'absolute',
-                      top: 8,
-                      right: 8,
-                      minWidth: 'auto',
-                      p: 0.5,
-                      bgcolor: 'rgba(255, 255, 255, 0.8)',
-                      '&:hover': {
-                        bgcolor: 'rgba(255, 255, 255, 0.9)',
-                      }
-                    }}
-                    onClick={() => handleFullscreen(fstImageRef.current)}
-                  >
-                    <FullscreenIcon />
-                  </Button>
-                </Box>
-                <Box sx={{ p: 3 }}>
-                  <div className="d-flex align-items-center mb-2">
-                    <h4 className="mb-0">Pierson Wireless FST</h4>
-                    <Chip 
-                      icon={<LockIcon />} 
-                      label="Internal Tool" 
-                      color="warning" 
-                      size="small" 
-                      sx={{ ml: 2 }}
-                    />
-                  </div>
-                  
-                  <p className="text-muted small">
-                    <InfoIcon sx={{ fontSize: 16, mr: 1, verticalAlign: 'text-bottom' }} />
-                    Note: Due to confidentiality agreements, limited information can be shared about this internal project.
-                  </p>
-                  
-                  {/* Tech Stack */}
-                  <Stack direction="row" spacing={1} sx={{ mb: 2, flexWrap: 'wrap', gap: 1 }}>
-                    <Chip icon={<CodeIcon />} label="React.js" color="primary" variant="outlined" />
-                    <Chip icon={<IntegrationInstructionsIcon />} label="Express.js" color="primary" variant="outlined" />
-                    <Chip icon={<StorageIcon />} label="SQL Server" color="primary" variant="outlined" />
-                  </Stack>
-
-                  {/* Brief Overview */}
-                  <p>
-                    Enterprise-level financial management and estimation platform serving 100+ employees.
-                    Integrates with multiple third-party services and handles complex workflows.
-                  </p>
-
-                  {/* Action Buttons */}
-                  <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
-                    <Button 
-                      variant="outlined" 
-                      startIcon={<InfoIcon />}
-                      onClick={() => handleOpenDialog('fst')}
-                    >
-                      See More Details
-                    </Button>
-                    {/* <Button variant="outlined" startIcon={<DownloadIcon />}>
-                      Download UI Preview
-                    </Button> */}
-                  </Stack>
-                </Box>
-              </Box>
-            </Paper>
-          </div>
-
-          {/* Self chat bot  */}
-          {/* https://alex-chat-eight.vercel.app/ */}
-          <div className="col-md-6 mb-4">
-            <Paper elevation={3} className="project-showcase">
-              <Box sx={{ position: 'relative', width: '100%' }}>
-                <Box sx={{ position: 'relative' }}>
-                  <iframe 
-                    src="https://alex-chat-eight.vercel.app/" 
-                    title="Alex Chat Bot" 
-                    className="showcase-image" 
-                    style={{ 
-                      width: '100%',
-                      height: '250px',
-                      border: 'none',
-                      borderRadius: '4px 4px 0 0',
-                      overflow: 'hidden'
-                    }}
-                  />
-                  <Button
-                    sx={{
-                      position: 'absolute',
-                      top: 8,
-                      right: 8,
-                      minWidth: 'auto',
-                      p: 0.5,
-                      bgcolor: 'rgba(255, 255, 255, 0.8)',
-                      '&:hover': {
-                        bgcolor: 'rgba(255, 255, 255, 0.9)',
-                      }
-                    }}
-                    onClick={() => window.open('https://alex-chat-eight.vercel.app/', '_blank')}
-                  >
-                    <FullscreenIcon />
-                  </Button>
-                </Box>
-                <Box sx={{ p: 3 }}>
-                  <div className="d-flex align-items-center mb-2">
-                    <h4 className="mb-0">Alex Chat Bot</h4>
-                    <Chip 
-                      label="Public Project" 
-                      color="success" 
-                      size="small" 
-                      sx={{ ml: 2 }}
-                    />
-                  </div>
-
-                  <Stack direction="row" spacing={1} sx={{ mb: 2, flexWrap: 'wrap', gap: 1 }}>
-                    <Chip icon={<CodeIcon />} label="NextJs" color="primary" variant="outlined" />
-                    <Chip label="Claude API" color="primary" variant="outlined" />
-                    <Chip label="Vercel" color="primary" variant="outlined" />
-                  </Stack>
-
-                  <p>
-                    A self-chat bot built with NextJs and the Claude API.
-                  </p>
-
-                  <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
-                    <Button 
-                      variant="contained" 
-                      href="https://alex-chat-eight.vercel.app/" 
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Check it out!
-                    </Button>
-                  </Stack>
-                </Box>
-              </Box>
-            </Paper>
-          </div>
-
-          <div className="col-md-6 mb-4">
-            <Paper elevation={3} className="project-showcase">
-              <Box sx={{ position: 'relative', width: '100%' }}>
-                <Box sx={{ position: 'relative' }}>
-                  <video
-                    autoPlay
-                    muted
-                    loop
-                    ref={viteVideoRef}
-                    style={{
-                      width: '100%',
-                      height: '250px',
-                      objectFit: 'cover',
-                      borderRadius: '4px 4px 0 0'
-                    }}
-                  >
-                    <source src={viteSupabaseDemo} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                  <Button
-                    sx={{
-                      position: 'absolute',
-                      top: 8,
-                      right: 8,
-                      minWidth: 'auto',
-                      p: 0.5,
-                      bgcolor: 'rgba(255, 255, 255, 0.8)',
-                      '&:hover': {
-                        bgcolor: 'rgba(255, 255, 255, 0.9)',
-                      }
-                    }}
-                    onClick={() => handleFullscreen(viteVideoRef.current)}
-                  >
-                    <FullscreenIcon />
-                  </Button>
-                </Box>
-                <Box sx={{ p: 3 }}>
-                  <div className="d-flex align-items-center mb-2">
-                    <h4 className="mb-0">Vite Supabase Template</h4>
-                    <Chip 
-                      label="Open Source" 
-                      color="success" 
-                      size="small" 
-                      sx={{ ml: 2 }}
-                    />
-                  </div>
-
-                  <Stack direction="row" spacing={1} sx={{ mb: 2, flexWrap: 'wrap', gap: 1 }}>
-                    <Chip icon={<CodeIcon />} label="React + Vite" color="primary" variant="outlined" />
-                    <Chip icon={<StorageIcon />} label="Supabase" color="primary" variant="outlined" />
-                    <Chip icon={<CodeIcon />} label="Chakra UI" color="primary" variant="outlined" />
-                  </Stack>
-
-                  <p>
-                    A modern full-stack template featuring React with Vite, Supabase authentication,
-                    and Chakra UI components. Includes Google OAuth and protected routing.
-                  </p>
-
-                  <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
-                    <Button 
-                      variant="outlined" 
-                      startIcon={<InfoIcon />}
-                      onClick={() => handleOpenDialog('viteSupabase')}
-                    >
-                      See More Details
-                    </Button>
-                    <Button 
-                      variant="contained" 
-                      href="https://github.com/Alex-Borchers-22/vite-supabase-chakra-template"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      View on GitHub
-                    </Button>
-                  </Stack>
-                </Box>
-              </Box>
-            </Paper>
-          </div>
-
-          {/* Baller Bets Project */}
-          {/* <div className="col-md-6 mb-4">
-            <Paper elevation={3} className="project-showcase">
-              <Box sx={{ position: 'relative', width: '100%' }}>
-                <iframe 
-                  src="https://main--baller-bets.netlify.app/" 
-                  title="Baller Bets App" 
-                  className="showcase-image" 
-                  style={{ 
-                    width: '100%',
-                    height: '250px',
-                    border: 'none',
-                    pointerEvents: 'none',
-                    borderRadius: '4px 4px 0 0',
-                    overflow: 'hidden'
-                  }}
-                />
-                <Box sx={{ p: 3 }}>
-                  <div className="d-flex align-items-center mb-2">
-                    <h4 className="mb-0">Baller Bets App</h4>
-                    <Chip 
-                      label="Public Project" 
-                      color="success" 
-                      size="small" 
-                      sx={{ ml: 2 }}
-                    />
-                  </div>
-
-                  <Stack direction="row" spacing={1} sx={{ mb: 2, flexWrap: 'wrap', gap: 1 }}>
-                    <Chip icon={<CodeIcon />} label="React.js" color="primary" variant="outlined" />
-                    <Chip icon={<IntegrationInstructionsIcon />} label="Express.js" color="primary" variant="outlined" />
-                    <Chip icon={<StorageIcon />} label="MySQL" color="primary" variant="outlined" />
-                  </Stack>
-
-                  <p>
-                    A modern sports betting platform with real-time updates, user authentication,
-                    and an interactive marketplace for betting enthusiasts.
-                  </p>
-
-                  <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
-                    <Button 
-                      variant="outlined" 
-                      startIcon={<InfoIcon />}
-                      onClick={() => handleOpenDialog('ballerBets')}
-                    >
-                      See More Details
-                    </Button>
-                    <Button 
-                      variant="contained" 
-                      href="https://main--baller-bets.netlify.app/" 
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Visit Live Site
-                    </Button>
-                  </Stack>
-                </Box>
-              </Box>
-            </Paper>
-          </div> */}
-
-          {/* Add this new project card before other cards */}
-          <div className="col-md-6 mb-4">
-            <Paper elevation={3} className="project-showcase">
-              <Box sx={{ position: 'relative', width: '100%' }}>
-                <Box sx={{ position: 'relative' }}>
-                  <video
-                    autoPlay
-                    muted
-                    loop
-                    ref={crawlVideoRef}
-                    style={{
-                      width: '100%',
-                      height: '250px',
-                      objectFit: 'cover',
-                      borderRadius: '4px 4px 0 0'
-                    }}
-                  >
-                    <source src={reactNativeDemo} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                  <Button
-                    sx={{
-                      position: 'absolute',
-                      top: 8,
-                      right: 8,
-                      minWidth: 'auto',
-                      p: 0.5,
-                      bgcolor: 'rgba(255, 255, 255, 0.8)',
-                      '&:hover': {
-                        bgcolor: 'rgba(255, 255, 255, 0.9)',
-                      }
-                    }}
-                    onClick={() => handleFullscreen(crawlVideoRef.current)}
-                  >
-                    <FullscreenIcon />
-                  </Button>
-                </Box>
-                <Box sx={{ p: 3 }}>
-                  <div className="d-flex align-items-center mb-2">
-                    <h4 className="mb-0">The Crawl</h4>
-                    <Chip 
-                      label="Open Source" 
-                      color="success" 
-                      size="small" 
-                      sx={{ ml: 2 }}
-                    />
-                  </div>
-
-                  <Stack direction="row" spacing={1} sx={{ mb: 2, flexWrap: 'wrap', gap: 1 }}>
-                    <Chip icon={<CodeIcon />} label="React Native" color="primary" variant="outlined" />
-                    <Chip icon={<CodeIcon />} label="Expo" color="primary" variant="outlined" />
-                    <Chip icon={<StorageIcon />} label="Supabase" color="primary" variant="outlined" />
-                    <Chip icon={<CodeIcon />} label="Tailwind" color="primary" variant="outlined" />
-                  </Stack>
-
-                  <p>
-                    A mobile party planning app that helps users organize social events using
-                    Google Maps API for real-time location data and route planning.
-                  </p>
-
-                  <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
-                    <Button 
-                      variant="outlined" 
-                      startIcon={<InfoIcon />}
-                      onClick={() => handleOpenDialog('crawl')}
-                    >
-                      See More Details
-                    </Button>
-                    <Button 
-                      variant="contained" 
-                      href="https://github.com/Alex-Borchers-22/crawl"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      View on GitHub
-                    </Button>
-                  </Stack>
-                </Box>
-              </Box>
-            </Paper>
-          </div>
-
-          {/* Research Project */}
-          <div className="col-md-6 mb-4">
-            <Paper elevation={3} className="project-showcase">
-              <Box sx={{ position: 'relative', width: '100%' }}>
-                <object
-                  data={mlResearch}
-                  type="application/pdf"
-                  style={{
-                    width: '100%',
-                    height: '250px',
-                    borderRadius: '4px 4px 0 0'
-                  }}
-                >
-                  <p>PDF preview not available</p>
-                </object>
-                <Box sx={{ p: 3 }}>
-                  <div className="d-flex align-items-center mb-2">
-                    <h4 className="mb-0">Machine Learning Research</h4>
-                    <Chip 
-                      label="Research" 
-                      color="info" 
-                      size="small" 
-                      sx={{ ml: 2 }}
-                    />
-                  </div>
-
-                  {/* Tech Stack */}
-                  <Stack direction="row" spacing={1} sx={{ mb: 2, flexWrap: 'wrap', gap: 1 }}>
-                    <Chip icon={<CodeIcon />} label="Python" color="primary" variant="outlined" />
-                    <Chip icon={<CodeIcon />} label="TensorFlow" color="primary" variant="outlined" />
-                    <Chip icon={<StorageIcon />} label="Data Analysis" color="primary" variant="outlined" />
-                  </Stack>
-
-                  {/* Brief Overview */}
-                  <p>
-                    Academic research focusing on advanced machine learning algorithms 
-                    and their applications in real-world scenarios.
-                  </p>
-
-                  {/* Action Buttons */}
-                  <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
-                    <Button 
-                      variant="outlined" 
-                      startIcon={<InfoIcon />}
-                      onClick={() => handleOpenDialog('research')}
-                    >
-                      See More Details
-                    </Button>
-                    <Button 
-                      variant="contained"
-                      href={mlResearch}
-                      download="Project_Borchers_Masters_Final.pdf"
-                    >
-                      Download Paper
-                    </Button>
-                  </Stack>
-                </Box>
-              </Box>
-            </Paper>
-          </div>
-
-          {/* SAJF Research Project */}
-          <div className="col-md-6 mb-4">
-            <Paper elevation={3} className="project-showcase">
-              <Box sx={{ position: 'relative', width: '100%' }}>
-                <object
-                  data={sajfResearch}
-                  type="application/pdf"
-                  style={{
-                    width: '100%',
-                    height: '250px',
-                    borderRadius: '4px 4px 0 0'
-                  }}
-                >
-                  <p>PDF preview not available</p>
-                </object>
-                <Box sx={{ p: 3 }}>
-                  <div className="d-flex align-items-center mb-2">
-                    <h4 className="mb-0">Sustainable Aviation Fuel Research</h4>
-                    <Chip 
-                      label="Research" 
-                      color="info" 
-                      size="small" 
-                      sx={{ ml: 2 }}
-                    />
-                  </div>
-
-                  {/* Tech Stack */}
-                  <Stack direction="row" spacing={1} sx={{ mb: 2, flexWrap: 'wrap', gap: 1 }}>
-                    <Chip icon={<StorageIcon />} label="Market Analysis" color="primary" variant="outlined" />
-                    <Chip icon={<StorageIcon />} label="Data Analysis" color="primary" variant="outlined" />
-                  </Stack>
-
-                  {/* Brief Overview */}
-                  <p>
-                    Market research and data analysis focused on the sustainable aviation fuel industry,
-                    examining economic viability and environmental impact.
-                  </p>
-
-                  {/* Action Buttons */}
-                  <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
-                    <Button 
-                      variant="outlined" 
-                      startIcon={<InfoIcon />}
-                      onClick={() => handleOpenDialog('sajfResearch')}
-                    >
-                      See More Details
-                    </Button>
-                    <Button 
-                      variant="contained"
-                      href={sajfResearch}
-                      download="SAJF Report.pdf"
-                    >
-                      Download Report
-                    </Button>
-                  </Stack>
-                </Box>
-              </Box>
-            </Paper>
-          </div>
+          {projects.map((project) => (
+            <div key={project.id} className="col-md-6 mb-4">
+              <WorkCard
+                project={project}
+                onOpenDialog={handleOpenDialog}
+                onFullscreen={handleFullscreen}
+                mediaRef={projectRefs[project.id]}
+              />
+            </div>
+          ))}
         </div>
       </div>
       <Dialog
@@ -699,12 +335,12 @@ const Work = () => {
         fullWidth
       >
         <DialogTitle>
-          {selectedProject && projectDetails[selectedProject].title}
+          {selectedProject && projects.find(p => p.id === selectedProject)?.title}
         </DialogTitle>
         <DialogContent>
           <h6 className="mb-3">Key Contributions:</h6>
           <List>
-            {selectedProject && projectDetails[selectedProject].contributions.map((contribution, index) => (
+            {selectedProject && projects.find(p => p.id === selectedProject)?.contributions.map((contribution, index) => (
               <ListItem key={index}>
                 <ListItemIcon>
                   <CheckCircleOutlineIcon color="primary" />
