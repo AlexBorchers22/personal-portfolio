@@ -195,7 +195,7 @@ const Work = () => {
       id: "mlResearch",
       title: "Machine Learning Research",
       status: "research",
-      mediaType: "pdf",
+      mediaType: "pdf-placeholder",
       mediaUrl: mlResearch,
       allowFullscreen: false,
       techStack: [
@@ -229,7 +229,7 @@ const Work = () => {
       id: "sajfResearch",
       title: "Sustainable Aviation Fuel Research",
       status: "research",
-      mediaType: "pdf",
+      mediaType: "pdf-placeholder",
       mediaUrl: sajfResearch,
       allowFullscreen: false,
       techStack: [
